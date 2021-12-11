@@ -14,10 +14,8 @@ def run():
     # scrape FB
     posts = []
     for post in get_posts(
-        group=712266335452208,
-        pages=2,
-        cookies='cookies.json',
-        ):  # cookies='cookies.json'):
+        group=712266335452208, pages=2, cookies="cookies.json",
+    ):  # cookies='cookies.json'):
         posts.append(post)
 
     # TODO: check op tijdelijke kamers: tijdelijk, onderhuur, t/m., verlenging

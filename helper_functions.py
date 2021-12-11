@@ -128,7 +128,7 @@ def extract_size(text, text_with_dot_comma):
             except ValueError:
                 # print(f'{i} didnt work, trying next version')
                 continue
-            if 5 < size > 40 :
+            if 5 < size > 40:
                 return size
 
     else:
