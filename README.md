@@ -7,7 +7,7 @@ The goal of this code is as follows:
 3. Send the matches to your email, daily. 
 
 ### About the code
-This project heavily relies on the already existing Facebook scraper found here : [GitHub Pages](https://github.com/kevinzg/facebook-scraper).
+This project heavily relies on the already existing Facebook scraper found here : [Facebook-scraper](https://github.com/kevinzg/facebook-scraper).
 In the repository also resides a CSV file from the city of Amsterdam, containing all the adresses of Amsterdam. (Freely accessible from https://data.amsterdam.nl ).
 
 ### usage
