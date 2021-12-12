@@ -63,3 +63,5 @@ def run():
     with open("matches.pickle", "wb") as f:
         pickle.dump(matches, f)
     # send_post_to_email(post)
+if __name__=='__main__':
+    run()

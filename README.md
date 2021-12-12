@@ -15,7 +15,7 @@ This project heavily relies on the already existing Facebook scraper found here 
 In the repository also resides a CSV file from the city of Amsterdam, containing all the adresses of Amsterdam. (Freely accessible from https://data.amsterdam.nl ).
 
 ### usage
-First, make sure you install the Facebook scraper from Kevin's repo (listed above). With `pip`, for example.
+First, make sure you install the Facebook scraper from Kevin's repo (listed above).
 
 In the repository file, you shoud insert a `cookies.json` file, containing your Facebook cookies, in JSON format. See Kevin's page for more info
 
