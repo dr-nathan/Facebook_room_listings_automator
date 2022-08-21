@@ -8,13 +8,13 @@ Created on Tue Nov 30 18:23:26 2021
 import pandas as pd
 import time
 import pickle
-import string
 
 start = time.perf_counter()
-straatnamen = pd.read_csv("130950b2-0563-4619-9726-b8046faf586b.csv", sep=";")
+straatnamen = pd.read_csv("130950b2-0563-4619-9726-b8046faf586b.csv", sep=";", dtype=str)
 
 no_dup = straatnamen.drop_duplicates(subset="Naam openbare ruimte")
 
+# keep only columns of interest
 final = no_dup[
     [
         "Naam openbare ruimte",
@@ -27,39 +27,24 @@ final = no_dup[
 ]
 
 
-for i in range(len(final)):
-    if isinstance(final.iloc[i]["Postcode"], float):  # means its a NaN.
-        final.iloc[i]["Postcode"] = 0000
-    else:
-        final.iloc[i]["Postcode"] = final.iloc[i]["Postcode"][0:4]
-    final.iloc[i]["Naam openbare ruimte"] = (
-        final.iloc[i]["Naam openbare ruimte"]
-        .lower()
-        .translate(str.maketrans("", "", string.punctuation))
-    )
-    final.iloc[i]["Naam stadsdeel"] = (
-        final.iloc[i]["Naam stadsdeel"]
-        .lower()
-        .translate(str.maketrans("", "", string.punctuation))
-    )
-    if isinstance(final.iloc[i]["Naam gebiedsgerichtwerkengebied"], float):
-        final.iloc[i]["Naam gebiedsgerichtwerkengebied"] = "onbekend"
-    else:
-        final.iloc[i]["Naam gebiedsgerichtwerkengebied"] = (
-            final.iloc[i]["Naam gebiedsgerichtwerkengebied"]
-            .lower()
-            .translate(str.maketrans("", "", string.punctuation))
-        )
-    final.iloc[i]["Naam Wijk"] = (
-        final.iloc[i]["Naam Wijk"]
-        .lower()
-        .translate(str.maketrans("", "", string.punctuation))
-    )
-    final.iloc[i]["Naam buurt"] = (
-        final.iloc[i]["Naam buurt"]
-        .lower()
-        .translate(str.maketrans("", "", string.punctuation))
-    )
+translator = str.maketrans('/', " ", '!"#$%&\'()*+,.:;<=>?@[\\]^_`{|}~')
+
+final['Postcode'] = final['Postcode'].apply(lambda L: '0000' if isinstance(L, float) else L[0:4])
+final['Naam gebiedsgerichtwerkengebied'] = final['Naam gebiedsgerichtwerkengebied'].\
+    apply(lambda L: 'onbekend' if isinstance(L, float) else L.lower().translate(translator))
+final["Naam openbare ruimte"] = final["Naam openbare ruimte"].\
+    apply(lambda x: x.lower().translate(str.maketrans(translator)))
+final["Naam stadsdeel"] = final["Naam stadsdeel"].\
+    apply(lambda x: x.lower().translate(str.maketrans(translator)))
+final["Naam Wijk"] = final["Naam Wijk"].\
+    apply(lambda x: x.lower().translate(str.maketrans(translator)))
+final["Naam buurt"] = final["Naam buurt"].\
+    apply(lambda x: x.lower().translate(str.maketrans(translator)))
+    
+
+#overleg givea a bunch of false positives    
+final= final[final['Naam openbare ruimte'] != 'overleg']
+
 stop = time.perf_counter()
 
 print(f"time:{stop-start}")
@@ -72,7 +57,6 @@ df = [
     final["Naam buurt"],
 ]  # put all wijk, buurt en gebieden together
 buurten_uniek = pd.concat(df).drop_duplicates()
-
 
 with open("streetnames_full.pickle", "wb") as f:
     pickle.dump(final, f)
